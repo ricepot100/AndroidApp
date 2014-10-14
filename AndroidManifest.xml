@@ -46,6 +46,11 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+        <service android:name="com.example.phonecommunicationmanage.timetickserver.TimeTickServer">
+            <intent-filter>
+                <action android:name="com.example.phonecommunicationmanage.timetickserver.TimeTickServer"/>
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

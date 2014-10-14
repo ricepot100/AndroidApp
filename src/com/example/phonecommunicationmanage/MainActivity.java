@@ -3,6 +3,8 @@ package com.example.phonecommunicationmanage;
 import java.io.File;
 import java.io.IOException;
 
+import com.example.phonecommunicationmanage.timetickserver.TimeTickReceiver;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
@@ -24,6 +26,7 @@ public class MainActivity extends Activity {
 	private Button btn_stop_service=null;
 	private final String f_action_sms_manage_service ="com.example.phonecommunicationmanage.sms.SMSManageService";
 	private final String f_action_phone_manage_service = "com.example.phonecommunicationmanage.phone.PhoneManageService";
+	private final String f_action_timetick_server = "com.example.phonecommunicationmanage.timetickserver.TimeTickServer";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,38 +66,63 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
     
+	Intent m_intentStartSMSService = null;
+	Intent m_intentStartPhoneService = null;
+	Intent m_intentTimeTickServer = null;
+	
+    
     class ButtonActionStartService implements OnClickListener {
-		final Intent intentStartSMSService = new Intent();
-		final Intent intentStartPhoneService = new Intent();
+
 		
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			intentStartSMSService.setAction(f_action_sms_manage_service);
-			startService(intentStartSMSService);
+			if (null != m_intentStartSMSService) {
+				stopService(m_intentStartSMSService);
+			}
 			
-			intentStartPhoneService.setAction(f_action_phone_manage_service);
-			startService(intentStartPhoneService);
+			if (null != m_intentStartPhoneService) {
+				stopService(m_intentStartPhoneService);
+			}
 			
-			IntentFilter filter = new IntentFilter(Intent.ACTION_TIME_TICK);
-			BroadcastReceiver timeTickRecekver = new TimeTickeReceiver();
-			registerReceiver(timeTickRecekver,filter);
+			if (null != m_intentTimeTickServer) {
+				stopService(m_intentTimeTickServer);
+			}
+			
+			m_intentStartSMSService = new Intent();
+			m_intentStartPhoneService = new Intent();
+			m_intentTimeTickServer = new Intent();
+			
+			m_intentStartSMSService.setAction(f_action_sms_manage_service);
+			startService(m_intentStartSMSService);
+			
+			m_intentStartPhoneService.setAction(f_action_phone_manage_service);
+			startService(m_intentStartPhoneService);
+			
+			m_intentTimeTickServer.setAction(f_action_timetick_server);
+			startService(m_intentTimeTickServer);
+			
+			
 		}		
 	}
 	
 	class ButtonActionStopService implements OnClickListener {
-		final Intent intentStopSMSService = new Intent();
-		final Intent intentStopPhoneService = new Intent();
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			intentStopSMSService.setAction(f_action_sms_manage_service);
-			stopService(intentStopSMSService);
-			intentStopPhoneService.setAction(f_action_phone_manage_service);
-			stopService(intentStopPhoneService);
+			if (null != m_intentStartSMSService) {
+				stopService(m_intentStartSMSService);
+				m_intentStartSMSService = null;
+			}
+			if (null != m_intentStartPhoneService) {
+				stopService(m_intentStartPhoneService);
+				m_intentStartPhoneService = null;
+			}
 			
-			BroadcastReceiver timeTickRecekver = new TimeTickeReceiver();
-			unregisterReceiver(timeTickRecekver);
+			if (null != m_intentTimeTickServer) {
+				stopService(m_intentTimeTickServer);
+			}
+
 		}	
 	}	
 }

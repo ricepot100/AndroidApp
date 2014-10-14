@@ -1,5 +1,7 @@
 package com.example.phonecommunicationmanage;
 
+import com.example.phonecommunicationmanage.timetickserver.TimeTickReceiver;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +26,7 @@ public class BootStartServiceReceiver extends BroadcastReceiver {
 		context.startService(intentStartPhoneService);
 		
 		IntentFilter filter = new IntentFilter(Intent.ACTION_TIME_TICK);
-		BroadcastReceiver timeTickRecekver = new TimeTickeReceiver();
+		BroadcastReceiver timeTickRecekver = new TimeTickReceiver();
 		context.getApplicationContext().registerReceiver(timeTickRecekver,filter);
 	}
 

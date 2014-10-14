@@ -36,6 +36,7 @@ public class PhoneManageService extends Service {
 		
 	}
 	
+	
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "onDestroy");
