@@ -17,17 +17,6 @@ import android.telephony.TelephonyManager;
 import android.text.format.Time;
 import android.util.Log;
 
-class CallingPhoneStarter {
-	public static final int NOT_ANY_CALL = 1;
-	public static final int Call_From_Other = 2;
-	public static final int Call_From_Self = 3;
-	
-	private int m_whocall = NOT_ANY_CALL;
-	public int getWhoCall() { return m_whocall; }
-	public void setWhoCall(int whoCall) {
-		m_whocall = whoCall;
-	}
-}
 
 public class PhoneStatusReceiver extends BroadcastReceiver {
 	
@@ -37,17 +26,13 @@ public class PhoneStatusReceiver extends BroadcastReceiver {
 	private StoreText m_log = new StoreText(PHONE_LOG_NAME);
 	private MyPhoneStateListener m_phoneListener= null;
 	private Context m_context = null;
-	private CallingPhoneStarter m_caller = new CallingPhoneStarter();
 	
 	private String m_goingoutNumber = null;  // only for Intent.ACTION_NEW_OUTGOING_CALL
 	
-	public CallingPhoneStarter WhoIsCaller() {
-		return m_caller;
-	}
-	
-	public String getGoingOutNumber() {
+	public String getGoingNumber() {
 		return m_goingoutNumber;
 	}
+	
 	
 	public PhoneStatusReceiver(Context context) {
 		super();
@@ -63,7 +48,6 @@ public class PhoneStatusReceiver extends BroadcastReceiver {
 		m_log.writeToText(TAG + ":onReceive: Intent action: " + intent.getAction() + "\r\n");
 		Log.d(TAG, "onReceive: Intent action: " + intent.getAction());
 		if(intent.getAction().equals(Intent.ACTION_NEW_OUTGOING_CALL)) {	// going a call
-			m_caller.setWhoCall(CallingPhoneStarter.Call_From_Self);
 			m_goingoutNumber = intent.getStringExtra(Intent.EXTRA_PHONE_NUMBER);
 			m_log.writeToText(TAG + ":Call out number: " + m_goingoutNumber + "\r\n");
 			Log.d(TAG, "Call out number: " + m_goingoutNumber);
@@ -71,8 +55,7 @@ public class PhoneStatusReceiver extends BroadcastReceiver {
 		else {
 			// There is not a special action for coming a call, but if not going, it should be a coming
 			m_goingoutNumber = null;
-			m_caller.setWhoCall(CallingPhoneStarter.Call_From_Other);
-			Log.d(TAG, "Get comming call");
+			Log.d(TAG, "a phone state changed");
 		}
 	}
 }
@@ -96,38 +79,39 @@ class MyPhoneStateListener extends PhoneStateListener {
 	public void onCallStateChanged(int state, String __incomingNumber) {
 		
 		super.onCallStateChanged(state, __incomingNumber);
-		String incomingNumber = null;
+		String phone_number = null;
 		String str_promotion = null;
-		if (CallingPhoneStarter.Call_From_Other == m_statusReceiver.WhoIsCaller().getWhoCall()) {
-			str_promotion = "From";
-			incomingNumber = __incomingNumber;
-		} else if (CallingPhoneStarter.Call_From_Self == m_statusReceiver.WhoIsCaller().getWhoCall()) {
-			str_promotion = "To";
-			incomingNumber = m_statusReceiver.getGoingOutNumber();
+		
+		if ( __incomingNumber.length() == 0) {					// It is a going calling's state event
+			phone_number  = m_statusReceiver.getGoingNumber();
+			str_promotion = "Call to ";
+		} else {
+			phone_number = __incomingNumber;
+			str_promotion = "Call from ";
 		}
-		m_log.writeToText(TAG + ":onCallStateChanged " + str_promotion + " incomingNumber: " + incomingNumber + 
+
+		m_log.writeToText(TAG + ":onCallStateChanged " + str_promotion +  phone_number + 
 				" ; The current state is: " + state + "\r\n");
-		Log.d(TAG, ":onCallStateChanged " + str_promotion +  " incomingNumber: " + incomingNumber + 
-				" ; The current state is: " + state);
+		Log.d(TAG, ":onCallStateChanged " + str_promotion +  phone_number + 
+				" ; The current state is: " + state );
 		switch (state) {
 			case TelephonyManager.CALL_STATE_IDLE: {
-				Log.d(TAG, "Hung up the diag: " + incomingNumber);
+				Log.d(TAG, "Hung up the diag: " + phone_number);
 				releasePhoneSound();
 				Log.d(TAG, "Stop record the sound");
-				m_log.writeToText(TAG + ":Hung up the diag: " + incomingNumber + "\r\n");
-				m_statusReceiver.WhoIsCaller().setWhoCall(CallingPhoneStarter.NOT_ANY_CALL);
+				m_log.writeToText(TAG + ":Hung up the diag: " + phone_number + "\r\n");
 				break;
 			}
 			case TelephonyManager.CALL_STATE_OFFHOOK: {
-				Log.d(TAG, "Answer the diag: " + incomingNumber);
-				m_log.writeToText(TAG + ":Answer the diag: " + incomingNumber + "\r\n");
-				if (null != incomingNumber)
-					recordPhoneSound(incomingNumber);
+				Log.d(TAG, "Answer the diag: " + phone_number);
+				m_log.writeToText(TAG + ":Answer the diag: " + phone_number + "\r\n");
+				if (null != phone_number)
+					recordPhoneSound(phone_number);
 				break;
 			}
 			case TelephonyManager.CALL_STATE_RINGING: {
-				Log.d(TAG, "Calling the diag: " + incomingNumber);
-				m_log.writeToText(TAG + ":Calling the diag: " + incomingNumber + "\r\n");
+				Log.d(TAG, "Calling the diag: " + phone_number);
+				m_log.writeToText(TAG + ":Calling the diag: " + phone_number + "\r\n");
 				break;
 			}
 		}
