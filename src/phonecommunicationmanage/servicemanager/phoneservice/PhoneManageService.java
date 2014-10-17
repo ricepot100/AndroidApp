@@ -1,4 +1,4 @@
-package com.example.phonecommunicationmanage.phone;
+package phonecommunicationmanage.servicemanager.phoneservice;
 
 import android.app.Service;
 import android.content.Intent;

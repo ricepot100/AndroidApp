@@ -1,14 +1,10 @@
-package com.example.phonecommunicationmanage;
+package phonecommunicationmanage;
 
 import java.io.File;
 import java.io.IOException;
-
-import com.example.phonecommunicationmanage.timetickserver.TimeTickReceiver;
-
+import phonecommunicationmanage.servicemanager.PhoneCommunicationServices;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
@@ -18,15 +14,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.example.phonecommunicationmanage.R;
+
 
 public class MainActivity extends Activity {
 	private final String TAG = "MainActivity";
 
 	private Button btn_start_service=null;
 	private Button btn_stop_service=null;
-	private final String f_action_sms_manage_service ="com.example.phonecommunicationmanage.sms.SMSManageService";
-	private final String f_action_phone_manage_service = "com.example.phonecommunicationmanage.phone.PhoneManageService";
-	private final String f_action_timetick_server = "com.example.phonecommunicationmanage.timetickserver.TimeTickServer";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,9 +61,7 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
     
-	Intent m_intentStartSMSService = null;
-	Intent m_intentStartPhoneService = null;
-	Intent m_intentTimeTickServer = null;
+	Intent m_intentServiceMananger = null;
 	
     
     class ButtonActionStartService implements OnClickListener {
@@ -77,32 +70,8 @@ public class MainActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			if (null != m_intentStartSMSService) {
-				stopService(m_intentStartSMSService);
-			}
-			
-			if (null != m_intentStartPhoneService) {
-				stopService(m_intentStartPhoneService);
-			}
-			
-			if (null != m_intentTimeTickServer) {
-				stopService(m_intentTimeTickServer);
-			}
-			
-			m_intentStartSMSService = new Intent();
-			m_intentStartPhoneService = new Intent();
-			m_intentTimeTickServer = new Intent();
-			
-			m_intentStartSMSService.setAction(f_action_sms_manage_service);
-			startService(m_intentStartSMSService);
-			
-			m_intentStartPhoneService.setAction(f_action_phone_manage_service);
-			startService(m_intentStartPhoneService);
-			
-			m_intentTimeTickServer.setAction(f_action_timetick_server);
-			startService(m_intentTimeTickServer);
-			
-			
+			m_intentServiceMananger = new Intent(PhoneCommunicationServices.SERVICE_MANAGER_SERVICE_INTENT_ACTION);
+			startService(m_intentServiceMananger);
 		}		
 	}
 	
@@ -110,17 +79,9 @@ public class MainActivity extends Activity {
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			if (null != m_intentStartSMSService) {
-				stopService(m_intentStartSMSService);
-				m_intentStartSMSService = null;
-			}
-			if (null != m_intentStartPhoneService) {
-				stopService(m_intentStartPhoneService);
-				m_intentStartPhoneService = null;
-			}
-			
-			if (null != m_intentTimeTickServer) {
-				stopService(m_intentTimeTickServer);
+			if(null != m_intentServiceMananger) {
+				stopService(m_intentServiceMananger);
+				m_intentServiceMananger = null;
 			}
 
 		}	

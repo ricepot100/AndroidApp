@@ -1,4 +1,4 @@
-package com.example.phonecommunicationmanage.database;
+package phonecommunicationmanage.database;
 
 import android.provider.ContactsContract;
 

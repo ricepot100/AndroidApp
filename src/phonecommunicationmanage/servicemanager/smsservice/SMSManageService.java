@@ -1,4 +1,4 @@
-package com.example.phonecommunicationmanage.sms;
+package phonecommunicationmanage.servicemanager.smsservice;
 
 import android.app.Service;
 import android.content.BroadcastReceiver;

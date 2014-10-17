@@ -1,4 +1,4 @@
-package com.example.phonecommunicationmanage.storage;
+package phonecommunicationmanage.storage;
 
 import java.io.FileWriter;
 import java.io.IOException;

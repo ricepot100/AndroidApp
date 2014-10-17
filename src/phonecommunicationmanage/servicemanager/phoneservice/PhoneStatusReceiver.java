@@ -1,12 +1,11 @@
-package com.example.phonecommunicationmanage.phone;
+package phonecommunicationmanage.servicemanager.phoneservice;
 
 import java.io.File;
 import java.io.IOException;
 
-import com.example.phonecommunicationmanage.storage.StorageInfo;
-import com.example.phonecommunicationmanage.storage.StoreDirectory;
-import com.example.phonecommunicationmanage.storage.StoreText;
-
+import phonecommunicationmanage.storage.StorageInfo;
+import phonecommunicationmanage.storage.StoreDirectory;
+import phonecommunicationmanage.storage.StoreText;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.example.phonecommunicationmanage;
+package phonecommunicationmanage;
 
 import android.app.ActivityManager;
 import android.content.Context;

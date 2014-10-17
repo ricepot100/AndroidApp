@@ -1,4 +1,4 @@
-package com.example.phonecommunicationmanage.database;
+package phonecommunicationmanage.database;
 
 public interface SMSDB_COLUMN_INFO {
 	public final static int INDEX__ID = 0;

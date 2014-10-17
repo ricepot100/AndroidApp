@@ -1,4 +1,4 @@
-package com.example.phonecommunicationmanage.database;
+package phonecommunicationmanage.database;
 
 import android.content.Context;
 import android.database.Cursor;

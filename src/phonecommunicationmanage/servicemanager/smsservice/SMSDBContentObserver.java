@@ -1,8 +1,7 @@
-package com.example.phonecommunicationmanage.sms;
+package phonecommunicationmanage.servicemanager.smsservice;
 
-import com.example.phonecommunicationmanage.database.*;
-import com.example.phonecommunicationmanage.storage.StoreText;
-
+import phonecommunicationmanage.database.*;
+import phonecommunicationmanage.storage.StoreText;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.database.Cursor;

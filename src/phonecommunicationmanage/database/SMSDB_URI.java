@@ -1,4 +1,4 @@
-package com.example.phonecommunicationmanage.database;
+package phonecommunicationmanage.database;
 
 public interface SMSDB_URI {
 	public final static String SMS_URI_ALL = "content://sms/";

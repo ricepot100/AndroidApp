@@ -1,4 +1,4 @@
-package com.example.phonecommunicationmanage.timetickserver;
+package phonecommunicationmanage.servicemanager.timetickserver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
