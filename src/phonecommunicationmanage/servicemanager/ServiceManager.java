@@ -1,9 +1,13 @@
 package phonecommunicationmanage.servicemanager;
 
+import java.util.List;
 import java.util.Vector;
 
+import android.app.ActivityManager;
 import android.app.Service;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
@@ -17,22 +21,23 @@ public class ServiceManager extends Service {
 		return null;
 	}
 	
-	Vector<Intent> m_vec_intentServices = new Vector<Intent>();
+	static Vector<String> m_vec_servicesNameDefault = new Vector<String>();
+	static Vector<Intent> m_vec_intentServices = new Vector<Intent>();
 	
 	private void startPhoneCommunicationServices() {
 		
 		Intent sms_intent = 
-				new Intent(PhoneCommunicationServices.startSeparateService(this, 
+				new Intent(PhoneCommunicationServices.startSeparateService(this.getApplicationContext(), 
 				PhoneCommunicationServices.SMS_SERVICE_INTENT_ACTION));
 		m_vec_intentServices.add(sms_intent);
 		
 		Intent phone_intent = 
-				new Intent(PhoneCommunicationServices.startSeparateService(this, 
+				new Intent(PhoneCommunicationServices.startSeparateService(this.getApplicationContext(), 
 				PhoneCommunicationServices.PHONE_SERVICE_INTENT_ACTION));
 		m_vec_intentServices.add(phone_intent);
 		
 		Intent timetick_intent = 
-				new Intent(PhoneCommunicationServices.startSeparateService(this, 
+				new Intent(PhoneCommunicationServices.startSeparateService(this.getApplicationContext(), 
 				PhoneCommunicationServices.TIME_TICK_SERVICE_INTENT_ACTION));
 		m_vec_intentServices.add(timetick_intent);
 	}
@@ -47,17 +52,44 @@ public class ServiceManager extends Service {
 		}
 	}
 	
+	private boolean isAllPhoneCommunicationServicesRunning() {
+		ActivityManager manager = (ActivityManager)this.getApplication().getSystemService(Context.ACTIVITY_SERVICE);
+		List<RunningServiceInfo> list_service = manager.getRunningServices(Integer.MAX_VALUE);
+	
+		
+		boolean allRunning = false;
+		for (int index1=0; index1<PhoneCommunicationServices.s_vec_ServicesClassName.length; index1++) {
+			for (int index2=0; index2<list_service.size(); index2++) {
+				String fetch_service_name = list_service.get(index2).service.getClassName();
+				if (fetch_service_name.equals(PhoneCommunicationServices.s_vec_ServicesClassName[index1])) {
+					allRunning = true;
+					continue;
+				}
+				allRunning = false;
+			}
+			if (false == allRunning) {
+				break;
+			}
+		}
+		list_service.clear();
+		
+		return allRunning;
+	}
 	@Override
 	public void onCreate(){
 		Log.d(TAG, "onCreate");
 		super.onCreate();
+		stopPhoneCommunicationServices();
 		startPhoneCommunicationServices();
 	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d(TAG, "onStartCommand");	
-		startPhoneCommunicationServices();
+		Log.d(TAG, "onStartCommand");
+		if (false == isAllPhoneCommunicationServicesRunning()) {
+			stopPhoneCommunicationServices();
+			startPhoneCommunicationServices();
+		}
 		return super.onStartCommand(intent, flags, startId);
 	}
 	
