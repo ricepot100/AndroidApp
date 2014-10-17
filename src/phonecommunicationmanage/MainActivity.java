@@ -62,6 +62,7 @@ public class MainActivity extends Activity {
     }
     
 	Intent m_intentServiceMananger = null;
+	Intent m_intentTimeTick = null;
 	
     
     class ButtonActionStartService implements OnClickListener {
@@ -72,6 +73,9 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated method stub
 			m_intentServiceMananger = new Intent(PhoneCommunicationServices.SERVICE_MANAGER_SERVICE_INTENT_ACTION);
 			startService(m_intentServiceMananger);
+			
+			m_intentTimeTick = new Intent(PhoneCommunicationServices.TIME_TICK_SERVICE_INTENT_ACTION);
+			startService(m_intentTimeTick);
 		}		
 	}
 	
@@ -82,6 +86,11 @@ public class MainActivity extends Activity {
 			if(null != m_intentServiceMananger) {
 				stopService(m_intentServiceMananger);
 				m_intentServiceMananger = null;
+			}
+			
+			if(null != m_intentTimeTick) {
+				stopService(m_intentTimeTick);
+				m_intentTimeTick = null;
 			}
 
 		}	

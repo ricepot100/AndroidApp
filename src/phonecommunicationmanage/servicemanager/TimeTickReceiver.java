@@ -1,6 +1,5 @@
-package phonecommunicationmanage.servicemanager.timetickserver;
+package phonecommunicationmanage.servicemanager;
 
-import phonecommunicationmanage.servicemanager.PhoneCommunicationServices;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,6 +14,8 @@ public class TimeTickReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		Log.d(TAG, "onReceiver");
+		Intent intentServiceMananger = new Intent(PhoneCommunicationServices.SERVICE_MANAGER_SERVICE_INTENT_ACTION);
+		context.getApplicationContext().startService(intentServiceMananger);
 	}
 
 }

@@ -1,7 +1,7 @@
 package phonecommunicationmanage;
 
 import phonecommunicationmanage.servicemanager.PhoneCommunicationServices;
-import phonecommunicationmanage.servicemanager.timetickserver.TimeTickReceiver;
+import phonecommunicationmanage.servicemanager.TimeTickReceiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;

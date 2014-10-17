@@ -33,8 +33,8 @@ public class SMSDBContentObserver extends ContentObserver {
 		if (null != cr) {
 			if (true == cr.moveToLast()) {
 				m_max_id = cr.getInt(SMSDB_COLUMN_INFO.INDEX__ID);
-				cr.close();
 			}
+			cr.close();
 		}
 	}
 	

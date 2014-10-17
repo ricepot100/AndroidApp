@@ -35,11 +35,6 @@ public class ServiceManager extends Service {
 				new Intent(PhoneCommunicationServices.startSeparateService(this.getApplicationContext(), 
 				PhoneCommunicationServices.PHONE_SERVICE_INTENT_ACTION));
 		m_vec_intentServices.add(phone_intent);
-		
-		Intent timetick_intent = 
-				new Intent(PhoneCommunicationServices.startSeparateService(this.getApplicationContext(), 
-				PhoneCommunicationServices.TIME_TICK_SERVICE_INTENT_ACTION));
-		m_vec_intentServices.add(timetick_intent);
 	}
 	
 	private void stopPhoneCommunicationServices() {
@@ -56,18 +51,19 @@ public class ServiceManager extends Service {
 		ActivityManager manager = (ActivityManager)this.getApplication().getSystemService(Context.ACTIVITY_SERVICE);
 		List<RunningServiceInfo> list_service = manager.getRunningServices(Integer.MAX_VALUE);
 	
-		
 		boolean allRunning = false;
+		
 		for (int index1=0; index1<PhoneCommunicationServices.s_vec_ServicesClassName.length; index1++) {
 			for (int index2=0; index2<list_service.size(); index2++) {
 				String fetch_service_name = list_service.get(index2).service.getClassName();
-				if (fetch_service_name.equals(PhoneCommunicationServices.s_vec_ServicesClassName[index1])) {
+				if (true == fetch_service_name.equals(PhoneCommunicationServices.s_vec_ServicesClassName[index1])) {
+					Log.d(TAG, "find the service: " + fetch_service_name);
 					allRunning = true;
-					continue;
+					break;
 				}
 				allRunning = false;
 			}
-			if (false == allRunning) {
+			if (false == allRunning) {Log.d(TAG, "Can not find the service: " + PhoneCommunicationServices.s_vec_ServicesClassName[index1]);
 				break;
 			}
 		}
@@ -86,10 +82,13 @@ public class ServiceManager extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		Log.d(TAG, "onStartCommand");
+		
 		if (false == isAllPhoneCommunicationServicesRunning()) {
+			Log.d(TAG, "onStartCommand: Need restart the services");
 			stopPhoneCommunicationServices();
 			startPhoneCommunicationServices();
 		}
+		
 		return super.onStartCommand(intent, flags, startId);
 	}
 	

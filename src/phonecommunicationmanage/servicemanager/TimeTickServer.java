@@ -1,4 +1,4 @@
-package phonecommunicationmanage.servicemanager.timetickserver;
+package phonecommunicationmanage.servicemanager;
 
 import java.util.List;
 
