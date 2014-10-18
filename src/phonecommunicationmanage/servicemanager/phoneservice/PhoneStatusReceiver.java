@@ -1,9 +1,6 @@
 package phonecommunicationmanage.servicemanager.phoneservice;
 
-import java.io.File;
 import java.io.IOException;
-
-import phonecommunicationmanage.storage.StorageInfo;
 import phonecommunicationmanage.storage.StoreDirectory;
 import phonecommunicationmanage.storage.StoreText;
 import android.app.Service;

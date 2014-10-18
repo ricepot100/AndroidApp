@@ -1,8 +1,5 @@
 package phonecommunicationmanage.servicemanager;
 
-import java.util.Vector;
-
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
