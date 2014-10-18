@@ -31,12 +31,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="phonecommunicationmanage.servicemanager.smsservice.SMSManageService">
+        <service android:name="phonecommunicationmanage.servicemanager.smsservice.SMSManageService" android:exported="false">
             <intent-filter>
                 <action android:name="phonecommunicationmanage.intent.action.SMSManageService"/>
             </intent-filter>
         </service>
-        <service android:name="phonecommunicationmanage.servicemanager.phoneservice.PhoneManageService">
+        <service android:name="phonecommunicationmanage.servicemanager.phoneservice.PhoneManageService" android:exported="false">
             <intent-filter>
                 <action android:name="phonecommunicationmanage.intent.action.PhoneManageService"/>
             </intent-filter>
@@ -46,12 +46,12 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <service android:name="phonecommunicationmanage.servicemanager.TimeTickServer">
+        <service android:name="phonecommunicationmanage.servicemanager.TimeTickServer" android:exported="false">
             <intent-filter>
                 <action android:name="phonecommunicationmanage.intent.action.TimeTickServer"/>
             </intent-filter>
         </service>
-        <service android:name="phonecommunicationmanage.servicemanager.ServiceManager">
+        <service android:name="phonecommunicationmanage.servicemanager.ServiceManager" android:exported="false">
             <intent-filter>
                 <action android:name="phonecommunicationmanage.intent.action.ServiceManagerService"/>
             </intent-filter>
