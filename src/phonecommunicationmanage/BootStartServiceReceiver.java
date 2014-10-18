@@ -1,6 +1,8 @@
 package phonecommunicationmanage;
 
 import phonecommunicationmanage.servicemanager.PhoneCommunicationServices;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,7 +15,15 @@ public class BootStartServiceReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
 		Log.d(TAG, "onReceive");
-		Intent intentServiceMananger = new Intent(PhoneCommunicationServices.SERVICE_MANAGER_SERVICE_INTENT_ACTION);
-		context.getApplicationContext().startService(intentServiceMananger);
+		/**
+		Intent intentTimeTickService = new Intent(PhoneCommunicationServices.TIME_TICK_SERVICE_INTENT_ACTION);
+		context.getApplicationContext().startService(intentTimeTickService);
+		*/
+		Intent intentAlarmClock = new Intent(PhoneCommunicationServices.ALARM_CLOCK_RECEIVER_INTENT_ACTION);
+		PendingIntent pendingIntentAlarmClock = PendingIntent.getBroadcast(context, 0, intentAlarmClock, PendingIntent.FLAG_UPDATE_CURRENT);
+		
+		AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		am.cancel(pendingIntentAlarmClock);
+		am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10 * 1000, pendingIntentAlarmClock);
 	}
 }

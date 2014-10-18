@@ -56,6 +56,11 @@
                 <action android:name="phonecommunicationmanage.intent.action.ServiceManagerService"/>
             </intent-filter>
         </service>
+        <receiver android:name="phonecommunicationmanage.servicemanager.AlarmClockReceiver" android:exported="false">
+            <intent-filter>
+                <action android:name="phonecommunicationmanage.intent.action.AlarmClockReceiver"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

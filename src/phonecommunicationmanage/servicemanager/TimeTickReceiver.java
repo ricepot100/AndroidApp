@@ -12,7 +12,7 @@ public class TimeTickReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
-		Log.d(TAG, "onReceiver");
+		Log.d(TAG, "onReceiver: action: " + intent.getAction());
 		Intent intentServiceMananger = new Intent(PhoneCommunicationServices.SERVICE_MANAGER_SERVICE_INTENT_ACTION);
 		context.getApplicationContext().startService(intentServiceMananger);
 	}

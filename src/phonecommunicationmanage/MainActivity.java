@@ -2,8 +2,12 @@ package phonecommunicationmanage;
 
 import java.io.File;
 import java.io.IOException;
+
 import phonecommunicationmanage.servicemanager.PhoneCommunicationServices;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -28,8 +32,8 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 		btn_start_service = (Button)findViewById(R.id.btn_start_service);
 		btn_stop_service = (Button)findViewById(R.id.btn_stop_service);
-		btn_start_service.setOnClickListener(new ButtonActionStartService());
-		btn_stop_service.setOnClickListener(new ButtonActionStopService());
+		btn_start_service.setOnClickListener(new ButtonActionStartService(this));
+		btn_stop_service.setOnClickListener(new ButtonActionStopService(this));
 		
 		File f_extStorage = Environment.getExternalStorageDirectory();
 		String str_pathInfo = f_extStorage.getAbsolutePath(); Log.d(TAG, "external absolute path = " + str_pathInfo);
@@ -61,37 +65,56 @@ public class MainActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
     
-	Intent m_intentServiceMananger = null;
-	Intent m_intentTimeTick = null;
+	//Intent m_intentTimeTick = null;
+	Intent m_intentAlarmClock = null;
+	PendingIntent m_pendingIntentAlarmClock = null;
 	
     
     class ButtonActionStartService implements OnClickListener {
+    	
+    	private Context m_context = null;
 
-		
+		public ButtonActionStartService(Context context) {
+			m_context = context;
+		}
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			m_intentServiceMananger = new Intent(PhoneCommunicationServices.SERVICE_MANAGER_SERVICE_INTENT_ACTION);
-			startService(m_intentServiceMananger);
-			
+			/**		
 			m_intentTimeTick = new Intent(PhoneCommunicationServices.TIME_TICK_SERVICE_INTENT_ACTION);
 			startService(m_intentTimeTick);
+			*/
+			
+			m_intentAlarmClock = new Intent(PhoneCommunicationServices.ALARM_CLOCK_RECEIVER_INTENT_ACTION);
+			m_pendingIntentAlarmClock = PendingIntent.getBroadcast(m_context, 0, m_intentAlarmClock, PendingIntent.FLAG_UPDATE_CURRENT);
+			
+			AlarmManager am = (AlarmManager) m_context.getSystemService(Context.ALARM_SERVICE);
+			am.cancel(m_pendingIntentAlarmClock);
+			am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10 * 1000, m_pendingIntentAlarmClock);
 		}		
 	}
 	
 	class ButtonActionStopService implements OnClickListener {
+		
+		private Context m_context = null;
+		
+		public ButtonActionStopService(Context context) {
+			m_context = context;
+		}
 		@Override
 		public void onClick(View v) {
 			// TODO Auto-generated method stub
-			if(null != m_intentServiceMananger) {
-				stopService(m_intentServiceMananger);
-				m_intentServiceMananger = null;
-			}
-			
+			/**
 			if(null != m_intentTimeTick) {
 				stopService(m_intentTimeTick);
 				m_intentTimeTick = null;
 			}
+			*/
+			if (null !=  m_intentAlarmClock) {
+				AlarmManager am = (AlarmManager) m_context.getSystemService(Context.ALARM_SERVICE);
+				am.cancel(m_pendingIntentAlarmClock);
+			}
+			
 
 		}	
 	}	

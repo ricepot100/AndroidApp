@@ -45,6 +45,7 @@ public class ServiceManager extends Service {
 			m_vec_intentServices.removeAllElements();
 		}
 	}
+
 	
 	private boolean isAllPhoneCommunicationServicesRunning() {
 		ActivityManager manager = (ActivityManager)this.getApplication().getSystemService(Context.ACTIVITY_SERVICE);

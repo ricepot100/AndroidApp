@@ -18,6 +18,8 @@ public class PhoneCommunicationServices {
 	public static final String PHONE_SERVICE_INTENT_ACTION = "phonecommunicationmanage.intent.action.PhoneManageService";
 	public static final String PHONE_SERVICE_CLASS_NAME = "phonecommunicationmanage.servicemanager.phoneservice.PhoneManageService";
 	
+	public static final String ALARM_CLOCK_RECEIVER_INTENT_ACTION = "phonecommunicationmanage.intent.action.AlarmClockReceiver";
+	
 	
 	
 	public static final String[] s_vec_ServicesClassName = {
