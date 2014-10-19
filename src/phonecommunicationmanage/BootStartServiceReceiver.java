@@ -20,7 +20,7 @@ public class BootStartServiceReceiver extends BroadcastReceiver {
 		context.getApplicationContext().startService(intentTimeTickService);
 		*/
 		Intent intentAlarmClock = new Intent(PhoneCommunicationServices.ALARM_CLOCK_RECEIVER_INTENT_ACTION);
-		PendingIntent pendingIntentAlarmClock = PendingIntent.getBroadcast(context, 0, intentAlarmClock, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pendingIntentAlarmClock = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intentAlarmClock, PendingIntent.FLAG_UPDATE_CURRENT);
 		
 		AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 		am.cancel(pendingIntentAlarmClock);
