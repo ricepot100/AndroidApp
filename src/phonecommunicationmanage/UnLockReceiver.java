@@ -16,9 +16,9 @@ public class UnLockReceiver extends BroadcastReceiver {
 		// TODO Auto-generated method stub
 		Log.d(TAG, "onReceive");
 		Intent intentAlarmClock = new Intent(PhoneCommunicationServices.ALARM_CLOCK_RECEIVER_INTENT_ACTION);
-		PendingIntent pendingIntentAlarmClock = PendingIntent.getBroadcast(context.getApplicationContext(), 0, intentAlarmClock, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pendingIntentAlarmClock = PendingIntent.getBroadcast(context.getApplicationContext().getApplicationContext(), 0, intentAlarmClock, PendingIntent.FLAG_UPDATE_CURRENT);
 		
-		AlarmManager am = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+		AlarmManager am = (AlarmManager) context.getApplicationContext().getSystemService(Context.ALARM_SERVICE);
 		am.cancel(pendingIntentAlarmClock);
 		am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10 * 1000, pendingIntentAlarmClock);
 	}
