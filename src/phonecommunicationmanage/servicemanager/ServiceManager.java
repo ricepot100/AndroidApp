@@ -4,11 +4,15 @@ import java.util.List;
 import java.util.Vector;
 
 import android.app.ActivityManager;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.util.Log;
 
 public class ServiceManager extends Service {
@@ -71,10 +75,21 @@ public class ServiceManager extends Service {
 		
 		return allRunning;
 	}
+	
+	WakeLock m_wakelock = null;
 	@Override
 	public void onCreate(){
 		Log.d(TAG, "onCreate");
 		super.onCreate();
+		PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+		m_wakelock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, TAG);
+		m_wakelock.acquire();
+		Intent intentAlarmClock = new Intent(PhoneCommunicationServices.ALARM_CLOCK_RECEIVER_INTENT_ACTION);
+		PendingIntent pendingIntentAlarmClock = PendingIntent.getBroadcast(this.getApplicationContext().getApplicationContext(), 0, intentAlarmClock, PendingIntent.FLAG_UPDATE_CURRENT);
+		
+		AlarmManager am = (AlarmManager) this.getApplication().getSystemService(Context.ALARM_SERVICE);
+		am.cancel(pendingIntentAlarmClock);
+		am.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 10 * 1000, pendingIntentAlarmClock);
 		stopPhoneCommunicationServices();
 		startPhoneCommunicationServices();
 	}
@@ -96,6 +111,7 @@ public class ServiceManager extends Service {
 	public void onDestroy() {
 		Log.d(TAG, "onDestroy");
 		stopPhoneCommunicationServices();
+		m_wakelock.release();
 		super.onDestroy();
 	}
 }
